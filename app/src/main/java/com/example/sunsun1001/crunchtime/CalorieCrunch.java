@@ -3,6 +3,7 @@ package com.example.sunsun1001.crunchtime;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,11 +14,22 @@ import android.widget.Toast;
 import android.text.TextUtils;
 import android.view.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class CalorieCrunch extends AppCompatActivity {
 
     int[] exercise = {350, 200, 10, 12};
+    String[] exerciseNames = {"Pushups", "Situps", "Jumping", "Jogging"};
 
-    int[] boolMins = {0, 1, 0, 1};
+    Map<String, Pair> exercises = new HashMap<String, Pair>() {{
+        put("Pushups", Pair.create(350, 0)); // 0 represents reps
+        put("Situps", Pair.create(200, 0));
+        put("Jumping", Pair.create(10, 1));
+        put("Jogging", Pair.create(12, 1));
+    }};
+
+    int[] boolMins = {0, 0, 1, 1};
 
     Button btnSubmit;
     RadioButton jogging, jumping, pushups, situps;
@@ -52,20 +64,18 @@ public class CalorieCrunch extends AppCompatActivity {
 
     public void onCalorieClick(View v) {
         String strUserName = input.getText().toString();
-
         inputNum = Double.parseDouble(strUserName);
+        String currentChecked = getCurrentChecked();
+        Pair<Integer, Integer> valueCurrentExercise = exercises.get(currentChecked);
 
-        if (pushups.isChecked()) {
-            output.setText(Double.toString((inputNum / exercise[0]) * 100));
-        } else if (situps.isChecked()) {
-            output.setText(Double.toString((inputNum / exercise[1]) * 100));
-        } else if (jumping.isChecked()) {
-            output.setText(Double.toString((inputNum / exercise[2]) * 100));
-        } else  {
-            output.setText(Double.toString((inputNum / exercise[3]) * 100));
-        }
+        output.setText(Double.toString((inputNum / valueCurrentExercise.first) * 100));
+    }
 
+    public String getCurrentChecked() {
+        int selected = group.getCheckedRadioButtonId();
+        RadioButton b = (RadioButton) findViewById(selected);
 
+        return b.getText().toString();
     }
     public void onClickJogging(View v) {
         Toast.makeText(this, "Enter Minutes of Activity", Toast.LENGTH_SHORT).show();
@@ -82,6 +92,8 @@ public class CalorieCrunch extends AppCompatActivity {
     public void onClickPushups(View v) {
         Toast.makeText(this, "Enter Reps of Activity", Toast.LENGTH_SHORT).show();
     }
+
+    public void getConversions(int inputNum)
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
