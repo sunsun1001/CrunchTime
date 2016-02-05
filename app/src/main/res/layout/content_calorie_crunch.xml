@@ -8,6 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:id="@+id/contentView"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.sunsun1001.crunchtime.CalorieCrunch"
     tools:showIn="@layout/activity_calorie_crunch">
@@ -24,9 +25,7 @@
             android:layout_height="wrap_content"
             android:text="Pushups"
             android:id="@+id/pushupsRadio"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true"
-            android:checked="false"
+            android:checked="true"
             android:enabled="true"
             android:clickable="true"
             android:onClick="onClickPushups"/>
@@ -39,9 +38,7 @@
             android:checked="false"
             android:enabled="true"
             android:clickable="true"
-            android:onClick="onClickSitups"
-            android:layout_below="@+id/pushupsRadio"
-            android:layout_alignParentStart="true" />
+            android:onClick="onClickSitups"/>
 
         <RadioButton
             android:layout_width="wrap_content"
@@ -51,9 +48,7 @@
             android:checked="false"
             android:enabled="true"
             android:clickable="true"
-            android:onClick="onClickJumping"
-            android:layout_below="@+id/situpsRadio"
-            android:layout_alignParentStart="true" />
+            android:onClick="onClickJumping"/>
 
         <RadioButton
             android:layout_width="wrap_content"
@@ -63,9 +58,7 @@
             android:checked="false"
             android:enabled="true"
             android:clickable="true"
-            android:onClick="onClickJogging"
-            android:layout_below="@+id/jumpingJacksRadio"
-            android:layout_alignParentStart="true" />
+            android:onClick="onClickJogging"/>
     </RadioGroup>
 
     <EditText
@@ -86,20 +79,45 @@
         android:text="Calculate"
         android:id="@+id/calcCalories"
         android:layout_alignBottom="@+id/repsMins"
-        android:layout_toEndOf="@+id/repsMins" />
+        android:layout_toEndOf="@+id/repsMins"
+        android:onClick="onCalorieClick" />
 
     <TextView
         android:id="@+id/outputText"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/repsMins"
-        android:text="TextView"
+        android:layout_alignStart="@+id/repsMins"
+        android:text=""
+        android:textStyle="bold"
         android:layout_below="@+id/repsMins"
         android:layout_alignParentEnd="false"
         android:layout_alignParentStart="false"
-        android:layout_marginLeft="100dp"
-        android:layout_marginBottom="300dp"
+        android:gravity="center_horizontal"
         android:layout_marginTop="25dp" />
+
+    <TextView
+        android:id="@+id/conversionHint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/outputText"
+        android:text="Same can be achieved by:"
+        android:visibility="invisible"
+        android:layout_below="@+id/outputText"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentStart="false"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="25dp" />
+
+
+    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:id="@+id/conversionTable"
+        android:layout_below="@id/conversionHint"
+        android:layout_marginTop="25dp"
+        android:stretchColumns="0,1,2">
+    </TableLayout>
 
 
 </RelativeLayout>
