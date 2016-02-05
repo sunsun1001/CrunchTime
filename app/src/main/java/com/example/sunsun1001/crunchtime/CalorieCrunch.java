@@ -9,12 +9,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.text.TextUtils;
 import android.view.*;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 public class CalorieCrunch extends AppCompatActivity {
@@ -22,7 +26,7 @@ public class CalorieCrunch extends AppCompatActivity {
     int[] exercise = {350, 200, 10, 12};
     String[] exerciseNames = {"Pushups", "Situps", "Jumping", "Jogging"};
 
-    Map<String, Pair> exercises = new HashMap<String, Pair>() {{
+    Map<String, Pair<Integer, Integer>> exercises = new HashMap<String, Pair<Integer, Integer>>() {{
         put("Pushups", Pair.create(350, 0)); // 0 represents reps
         put("Situps", Pair.create(200, 0));
         put("Jumping", Pair.create(10, 1));
@@ -37,6 +41,8 @@ public class CalorieCrunch extends AppCompatActivity {
     EditText input;
     TextView output;
     Double inputNum;
+    TableLayout conversionTable;
+    Pair<Integer, Integer> valueCurrentExercise;
 
 
     @Override
@@ -44,6 +50,7 @@ public class CalorieCrunch extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calorie_crunch);
 
+        conversionTable = (TableLayout) findViewById(R.id.conversionTable);
         input = (EditText) findViewById(R.id.repsMins);
         output = (TextView) findViewById(R.id.outputText);
         jogging = (RadioButton) findViewById(R.id.joggingRadio);
@@ -66,17 +73,19 @@ public class CalorieCrunch extends AppCompatActivity {
         String strUserName = input.getText().toString();
         inputNum = Double.parseDouble(strUserName);
         String currentChecked = getCurrentChecked();
-        Pair<Integer, Integer> valueCurrentExercise = exercises.get(currentChecked);
-
-        output.setText(Double.toString((inputNum / valueCurrentExercise.first) * 100));
+        valueCurrentExercise = exercises.get(currentChecked);
+        Double caloriesBurnt = (inputNum / valueCurrentExercise.first) * 100;
+        output.setText(Double.toString(Math.round(caloriesBurnt * 10)/10) + " calories burnt");
+        setConversions(currentChecked, caloriesBurnt);
     }
 
-    public String getCurrentChecked() {
+    private String getCurrentChecked() {
         int selected = group.getCheckedRadioButtonId();
         RadioButton b = (RadioButton) findViewById(selected);
 
         return b.getText().toString();
     }
+
     public void onClickJogging(View v) {
         Toast.makeText(this, "Enter Minutes of Activity", Toast.LENGTH_SHORT).show();
     }
@@ -93,7 +102,25 @@ public class CalorieCrunch extends AppCompatActivity {
         Toast.makeText(this, "Enter Reps of Activity", Toast.LENGTH_SHORT).show();
     }
 
-    public void getConversions(int inputNum)
+    private void setConversions(String checked, Double caloriesBurnt) {
+        TableRow row = new TableRow(this);
+        TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
+        row.setLayoutParams(lp);
+
+        for (Map.Entry<String, Pair<Integer, Integer>> entry : exercises.entrySet()) {
+            if (!entry.getKey().equals(checked)) {
+                TextView tv = new TextView(this);
+                Integer forHundredCals = entry.getValue().first;
+                Integer isMinutes = entry.getValue().second;
+                Double otherRequired = caloriesBurnt / 100 * forHundredCals;
+                String neededRepsOrMinutes = Double.toString(Math.round(otherRequired * 10) / 10) + (isMinutes == 1 ? " minutes" : " reps");
+                tv.setText(neededRepsOrMinutes);
+                row.addView(tv);
+            }
+
+        }
+        conversionTable.addView(row);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
