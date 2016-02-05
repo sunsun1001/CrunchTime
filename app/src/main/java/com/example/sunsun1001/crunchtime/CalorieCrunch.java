@@ -23,18 +23,13 @@ import java.util.Iterator;
 import java.util.Map;
 
 public class CalorieCrunch extends AppCompatActivity {
-
-    int[] exercise = {350, 200, 10, 12};
-    String[] exerciseNames = {"Pushups", "Situps", "Jumping", "Jogging"};
-
+    
     Map<String, Pair<Integer, Integer>> exercises = new HashMap<String, Pair<Integer, Integer>>() {{
         put("Pushups", Pair.create(350, 0)); // 0 represents reps
         put("Situps", Pair.create(200, 0));
-        put("Jumping", Pair.create(10, 1));
+        put("Jumping Jacks", Pair.create(10, 1));
         put("Jogging", Pair.create(12, 1));
     }};
-
-    int[] boolMins = {0, 0, 1, 1};
 
     Button btnSubmit;
     RadioButton jogging, jumping, pushups, situps;
