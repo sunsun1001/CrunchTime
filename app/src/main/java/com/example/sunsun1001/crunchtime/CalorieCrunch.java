@@ -1,5 +1,6 @@
 package com.example.sunsun1001.crunchtime;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -43,6 +44,7 @@ public class CalorieCrunch extends AppCompatActivity {
     Double inputNum;
     TableLayout conversionTable;
     Pair<Integer, Integer> valueCurrentExercise;
+    TextView conversionHint;
 
 
     @Override
@@ -53,6 +55,7 @@ public class CalorieCrunch extends AppCompatActivity {
         conversionTable = (TableLayout) findViewById(R.id.conversionTable);
         input = (EditText) findViewById(R.id.repsMins);
         output = (TextView) findViewById(R.id.outputText);
+        conversionHint = (TextView) findViewById(R.id.conversionHint);
         jogging = (RadioButton) findViewById(R.id.joggingRadio);
         jumping = (RadioButton) findViewById(R.id.jumpingJacksRadio);
         pushups = (RadioButton) findViewById(R.id.pushupsRadio);
@@ -103,9 +106,17 @@ public class CalorieCrunch extends AppCompatActivity {
     }
 
     private void setConversions(String checked, Double caloriesBurnt) {
+        conversionTable.removeAllViews();
         TableRow row = new TableRow(this);
-        TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
+        TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
         row.setLayoutParams(lp);
+        row.setGravity(Gravity.CENTER_HORIZONTAL);
+
+        TableRow headerRow = new TableRow(this);
+        headerRow.setLayoutParams(lp);
+        headerRow.setGravity(Gravity.CENTER_HORIZONTAL);
+
+        conversionHint.setVisibility(View.VISIBLE);
 
         for (Map.Entry<String, Pair<Integer, Integer>> entry : exercises.entrySet()) {
             if (!entry.getKey().equals(checked)) {
@@ -115,10 +126,18 @@ public class CalorieCrunch extends AppCompatActivity {
                 Double otherRequired = caloriesBurnt / 100 * forHundredCals;
                 String neededRepsOrMinutes = Double.toString(Math.round(otherRequired * 10) / 10) + (isMinutes == 1 ? " minutes" : " reps");
                 tv.setText(neededRepsOrMinutes);
+                tv.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
                 row.addView(tv);
+
+                TextView headerView = new TextView(this);
+                headerView.setTypeface(null, Typeface.BOLD);
+                headerView.setText(entry.getKey());
+                headerView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                headerRow.addView(headerView);
             }
 
         }
+        conversionTable.addView(headerRow);
         conversionTable.addView(row);
     }
 
