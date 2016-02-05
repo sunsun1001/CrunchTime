@@ -21,9 +21,15 @@ import android.view.*;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+<<<<<<< HEAD
 
 public class CalorieCrunch extends AppCompatActivity {
 
+=======
+
+public class CalorieCrunch extends AppCompatActivity {
+    
+>>>>>>> origin/master
     Map<String, Pair<Integer, Integer>> exercises = new HashMap<String, Pair<Integer, Integer>>() {{
         put("Pushups", Pair.create(350, 0)); // 0 represents reps
         put("Situps", Pair.create(200, 0));
