@@ -86,7 +86,8 @@
         android:text="Calculate"
         android:id="@+id/calcCalories"
         android:layout_alignBottom="@+id/repsMins"
-        android:layout_toEndOf="@+id/repsMins" />
+        android:layout_toEndOf="@+id/repsMins"
+        android:onClick="onCalorieClick" />
 
     <TextView
         android:id="@+id/outputText"

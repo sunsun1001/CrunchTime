@@ -2,6 +2,7 @@ package com.example.sunsun1001.crunchtime;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -47,28 +48,25 @@ public class CalorieCrunch extends AppCompatActivity {
         }
 
         inputNum = Double.parseDouble(strUserName);
-
-        btnSubmit.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View v) {
-
-
-                if (pushups.isChecked()) {
-                    output.setText(Double.toString((inputNum / exercise[0]) * 100));
-                } else if (situps.isChecked()) {
-                    output.setText(Double.toString((inputNum / exercise[1]) * 100));
-                } else if (jumping.isChecked()) {
-                    output.setText(Double.toString((inputNum / exercise[2]) * 100));
-                } else  {
-                    output.setText(Double.toString((inputNum / exercise[3]) * 100));
-                }
-
-
-            }
-        });
     }
 
+    public void onCalorieClick(View v) {
+        String strUserName = input.getText().toString();
 
+        inputNum = Double.parseDouble(strUserName);
+
+        if (pushups.isChecked()) {
+            output.setText(Double.toString((inputNum / exercise[0]) * 100));
+        } else if (situps.isChecked()) {
+            output.setText(Double.toString((inputNum / exercise[1]) * 100));
+        } else if (jumping.isChecked()) {
+            output.setText(Double.toString((inputNum / exercise[2]) * 100));
+        } else  {
+            output.setText(Double.toString((inputNum / exercise[3]) * 100));
+        }
+
+
+    }
     public void onClickJogging(View v) {
         Toast.makeText(this, "Enter Minutes of Activity", Toast.LENGTH_SHORT).show();
     }
